@@ -1,0 +1,31 @@
+name: Testing Unit test action of lab1
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.8
+
+    - name: Install Dependencies
+      uses: pip install -r requirements.txt
+    
+    - name: Run Unit Tests
+      uses: python -m unittest test/test_unittest.py
+    
+    - name: Notify on success
+      if: success()
+      run: echo "unit test cases passed sucessfully"
+    
+    - name: Notify on Failure
+      if: failure()
+      run: echo "unit test cases failed"
